@@ -123,33 +123,53 @@ while True:
     if forestilling.lower() == "de elendige":
         coloumn_to_print = "A"
     elif forestilling.lower() == "vildanden":
-        coloumn_to_print = "D"
+        coloumn_to_print = "C"
     print(f"Her er ledige datoer for {forestilling}:")
     for cell in sheet[coloumn_to_print]:
         print(cell.value)
-    honnor = int(input("Hvor mange honnørbilletter skal du ha? "))
+    honnor = int(input("Hvor mange honnørbilletter (over 67 år) skal du ha? "))
     voksen = int(input("Hvor mange voksenbilletter skal du ha? "))
     student = int(input("Hvor mange studentbilletter skal du ha? "))
     barn = int(input("Hvor mange barnebilletter skal du ha? "))
     antall_billetter = honnor + voksen + student + barn
-    if antall_billetter > 0:
-        dato = int(input("Hvilken dag i februar? "))
-        if antall_billetter <= sheet["C" + str(dato + 1)].value:
-            temp_plass = sheet["C" + str(dato + 1)].value
-            print(temp_plass)
-            sheet["C" + str(dato + 1)] = temp_plass - antall_billetter
-            print(sheet["C" + str(dato + 1)].value)
-            break
-        else:
-            svar = input(
-                f"De er ingen ledige forestillinger for {forestilling} for {dato}.februar. Vil du velge et annet tidspunkt? (J/N) "
-            )
-            if svar.upper()[0] == "J":
-                True
-            else:
+    
+    
+    if forestilling.lower() == "vildanden":
+        if antall_billetter > 0:
+            dato = int(input("Hvilken dag i februar? "))
+            if antall_billetter <= sheet["D" + str(dato + 1)].value:
+                temp_plass = sheet["D" + str(dato + 1)].value
+                print(temp_plass)
+                sheet["D" + str(dato + 1)] = temp_plass - antall_billetter
+                print(sheet["D" + str(dato + 1)].value)
                 break
-    else:
-        print("Du må bestille minst 1 billett")
+            else:
+                svar = input(
+                    f"De er ingen ledige forestillinger for {forestilling} for {dato}.februar. Vil du velge et annet tidspunkt? (J/N) "
+                )
+                if svar.upper()[0] == "J":
+                    True
+                else:
+                    break
+                
+    if forestilling.lower() == "de elendige":
+        if antall_billetter > 0:
+            dato = int(input("Hvilken dag i februar? "))
+            if antall_billetter <= sheet["B" + str(dato + 1)].value:
+                temp_plass = sheet["B" + str(dato + 1)].value
+                print(temp_plass)
+                sheet["B" + str(dato + 1)] = temp_plass - antall_billetter
+                print(sheet["B" + str(dato + 1)].value)
+                break
+            else:
+                svar = input(
+                    f"De er ingen ledige forestillinger for {forestilling} for {dato}.februar. Vil du velge et annet tidspunkt? (J/N) "
+                )
+                if svar.upper()[0] == "J":
+                    True
+                else:
+                    break
+    
 wb.save("LedigDato.xlsx")
 
 
