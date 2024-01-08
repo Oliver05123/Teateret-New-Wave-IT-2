@@ -1,4 +1,3 @@
-import json
 import openpyxl
 
 # Klasser
@@ -84,11 +83,14 @@ class Billett:
         sheet["H1"] = "bestillingsnummer"
         print('H2', sheet["H2"].value)
         bestillingsnummer = sheet["H2"].value
-        print('bestillingsnummer', bestillingsnummer)
+
 
         if bestillingsnummer == None:
             bestillingsnummer = 2
-        sheet["H2"] = bestillingsnummer + 1
+            sheet["H2"] = bestillingsnummer
+        else:
+            sheet["H2"] = bestillingsnummer + 1
+        print('bestillingsnummer', bestillingsnummer)
         print('h2', sheet["H2"].value)
         workbook.save(filnavn + ".xlsx")
         sheet["A" + str(sheet["H2"].value)] = self.forestilling
@@ -442,7 +444,7 @@ while True:
         if antall_billetter > 0:
             dato = input(
                 '\nHvilken dato vil du bestille for?'\
-                '\nSvar(dd/mm/åå): '
+                '\nSvar(dd.mm.åå): '
             )
             temp_dato = int(dato[:2])
 
@@ -470,4 +472,8 @@ wb.save("LedigDato.xlsx")
 ny_billett = Billett(forestilling, dato, honnor, voksen, student, barn)
 ny_billett.eksporter_bestilling(epost)
 
-ny_billett.vis_kvittering(epost, dato)
+wb = openpyxl.load_workbook(epost + ".xlsx")
+sheet = wb.active
+
+if sheet["H2"].value > 2:
+    ny_billett.vis_kvittering(epost, dato)
